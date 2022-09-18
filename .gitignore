@@ -7,8 +7,10 @@
 *.o
 *.obj
 
-# Build dir
+# Artifacts
 build/
+.cache/
+compile_commands.json
 
 # Precompiled Headers
 *.gch

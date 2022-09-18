@@ -1,6 +1,11 @@
-#include <iostream>
+#include "curse.h"
 
 int main() {
-    std::cout << "Hi" << '\n';
+    Curse curse;
+
+    curse.print("Print text through curse");
+    curse.refresh();
+    curse.getchar();
+
     return 0;
 }

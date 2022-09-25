@@ -9,4 +9,7 @@ add_executable(${PROJECT_NAME}
                main.cpp
                curse.cpp)
 
+target_compile_features(
+    kidle PRIVATE cxx_std_20)
+
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})

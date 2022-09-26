@@ -1,32 +1,54 @@
+#include <chrono>
 #include <string>
 #include <thread>
 
 #include "curse.h"
 #include "harmonicloophelpers.h"
+#include "sharedvariable.h"
 
-std::string message(std::chrono::milliseconds elapsed) {
-    return std::string("Elapsed: ") + std::to_string(elapsed.count()) + "ms\n";
+std::string message(int tick) {
+    return std::string("Tick: ") + std::to_string(tick) + "\n";
+}
+
+int next(concurrent::Variable<int>& data) {
+    auto dataAccessor = data.uniqueLock();
+    return ++*dataAccessor;
 }
 
 int main() {
+
+    concurrent::Variable<int> data{0};
+
+    std::jthread processThread{
+        [&data] {
+            kloop::mainLoop(
+                std::chrono::milliseconds{30},
+                [&data] () mutable {
+                    const auto currentData = next(data);
+                    return currentData > 100 ?
+                       kloop::LoopControl::Break:
+                       kloop::LoopControl::Continue;
+                }
+            );
+        }
+    };
+
     Curse curse;
 
     kloop::mainLoop(
-        std::chrono::milliseconds(30),
-        [&curse, prev = ktime::now(), counter = 100] () mutable {
-            const auto current = ktime::now();
-            curse.print(message(ktime::elapsed<std::chrono::milliseconds>(prev)).c_str());
+        std::chrono::milliseconds{50},
+        [&curse, &data] () mutable {
+            const auto currentData = [&data] {
+                const auto dataAccessor = data.uniqueLock();
+                return *dataAccessor;
+            } ();
+            curse.print(message(currentData).c_str());
             curse.refresh();
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
-            prev = current;
-
-            if (--counter < 0) {
-                return kloop::LoopControl::Break;
-            }
-            return kloop::LoopControl::Continue;
+            return currentData > 100 ?
+               kloop::LoopControl::Break:
+               kloop::LoopControl::Continue;
         }
     );
-
 
     curse.print("Print text through curse");
     curse.refresh();

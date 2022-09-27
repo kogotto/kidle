@@ -10,21 +10,21 @@ std::string message(int tick) {
     return std::string("Tick: ") + std::to_string(tick) + "\n";
 }
 
-int next(concurrent::Variable<int>& data) {
-    auto dataAccessor = data.uniqueLock();
-    return ++*dataAccessor;
+int next(concurrent::Variable<int>& dataHolder) {
+    auto data = dataHolder.uniqueLock();
+    return ++*data;
 }
 
 int main() {
 
-    concurrent::Variable<int> data{0};
+    concurrent::Variable<int> dataHolder{0};
 
     std::jthread processThread{
-        [&data] {
+        [&dataHolder] {
             kloop::mainLoop(
                 std::chrono::milliseconds{30},
-                [&data] () mutable {
-                    const auto currentData = next(data);
+                [&dataHolder] () mutable {
+                    const auto currentData = next(dataHolder);
                     return currentData > 100 ?
                        kloop::LoopControl::Break:
                        kloop::LoopControl::Continue;
@@ -37,10 +37,10 @@ int main() {
 
     kloop::mainLoop(
         std::chrono::milliseconds{50},
-        [&curse, &data] () mutable {
-            const auto currentData = [&data] {
-                const auto dataAccessor = data.uniqueLock();
-                return *dataAccessor;
+        [&curse, &dataHolder] () mutable {
+            const auto currentData = [&dataHolder] {
+                const auto data = dataHolder.uniqueLock();
+                return *data;
             } ();
             curse.print(message(currentData).c_str());
             curse.refresh();

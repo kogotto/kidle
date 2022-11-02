@@ -12,6 +12,10 @@ add_executable(${PROJECT_NAME}
 target_compile_features(
     kidle PRIVATE cxx_std_20)
 
+add_subdirectory(models)
+
 target_link_libraries(${PROJECT_NAME}
                       ${CURSES_LIBRARIES}
-                      pthread)
+                      pthread
+                      models
+                      )

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <models/defs.h>
+#include <model/defs.h>
 
 namespace model
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <models/generators.h>
+#include <model/generators.h>
 
 namespace model
 {

@@ -1,13 +1,13 @@
 
 add_library(
-    models
+    model
     generator.cpp
     generators.cpp
     world.cpp
     )
 
 target_include_directories(
-    models
+    model
     PUBLIC
     include
     )

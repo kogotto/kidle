@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include <models/generator.h>
+#include <model/generator.h>
 
 namespace model
 {

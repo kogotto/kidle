@@ -13,9 +13,11 @@ target_compile_features(
     kidle PRIVATE cxx_std_20)
 
 add_subdirectory(model)
+add_subdirectory(view)
 
 target_link_libraries(${PROJECT_NAME}
                       ${CURSES_LIBRARIES}
                       pthread
                       model
+                      view
                       )

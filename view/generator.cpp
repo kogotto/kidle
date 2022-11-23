@@ -5,4 +5,7 @@
 namespace view
 {
 
+void Generator::draw(const model::Generator& generatorModel) {
+}
+
 } // namespace view

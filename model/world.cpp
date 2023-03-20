@@ -4,7 +4,7 @@ namespace model
 {
 
 void World::tick(std::chrono::milliseconds delta) {
-    _points += _generators.tick(delta);
+    _score += _generators.tick(delta);
 }
 
 } // namespace model

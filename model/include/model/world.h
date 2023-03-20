@@ -14,7 +14,7 @@ public:
     void tick(std::chrono::milliseconds delta);
 private:
     Generators _generators;
-    Number _points{0};
+    Number _score{0};
 };
 
 } // namespace model

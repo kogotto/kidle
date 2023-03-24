@@ -3,6 +3,7 @@ add_library(
     view
     generator.cpp
     generators.cpp
+    score.cpp
     world.cpp
     )
 

@@ -12,9 +12,18 @@ class World
 {
 public:
     void tick(std::chrono::milliseconds delta);
+
+    const Number& score() const {
+        return _score;
+    }
+
+    const Generators& generators() const {
+        return _generators;
+    }
+
 private:
-    Generators _generators;
     Number _score{0};
+    Generators _generators;
 };
 
 } // namespace model

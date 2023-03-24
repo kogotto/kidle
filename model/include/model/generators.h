@@ -11,9 +11,16 @@ namespace model
 class Generators
 {
 public:
+    using RawGenerators = std::array<Generator, 8>;
+
     Number tick(std::chrono::milliseconds delta);
+
+    const RawGenerators& generators() const {
+        return _generators;
+    }
+
 private:
-    std::array<Generator, 8> _generators;
+    RawGenerators _generators;
     size_t _size{2u};
 };
 

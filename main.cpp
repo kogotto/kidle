@@ -2,7 +2,7 @@
 #include <string>
 #include <thread>
 
-#include "curse.h"
+#include <view/curse.h>
 #include "harmonicloophelpers.h"
 #include "sharedvariable.h"
 
@@ -33,7 +33,7 @@ int main() {
         }
     };
 
-    Curse curse;
+    view::Curse curse;
 
     kloop::mainLoop(
         std::chrono::milliseconds{50},

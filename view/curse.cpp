@@ -1,6 +1,9 @@
-#include "curse.h"
+#include <view/curse.h>
 
 #include <ncurses.h>
+
+namespace view
+{
 
 Curse::Curse() {
     initscr();
@@ -21,3 +24,5 @@ void Curse::refresh() {
 int Curse::getchar() {
     return ::getch();
 }
+
+} // namespace view

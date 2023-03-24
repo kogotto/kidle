@@ -1,5 +1,8 @@
 #pragma once
 
+namespace view
+{
+
 class Curse {
 public:
     Curse();
@@ -10,3 +13,5 @@ public:
     int getchar();
 private:
 };
+
+} // namespace view

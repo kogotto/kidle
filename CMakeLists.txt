@@ -10,7 +10,7 @@ add_executable(${PROJECT_NAME}
                curse.cpp)
 
 target_compile_features(
-    kidle PRIVATE cxx_std_20)
+    kidle PRIVATE cxx_std_23)
 
 add_subdirectory(model)
 add_subdirectory(view)

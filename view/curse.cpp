@@ -14,7 +14,7 @@ Curse::~Curse() {
 }
 
 void Curse::print(const char* str) {
-    ::printw(str);
+    ::printw("%s", str);
 }
 
 void Curse::refresh() {

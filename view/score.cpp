@@ -1,5 +1,16 @@
 #include <view/score.h>
 
+#include <string>
+
+namespace
+{
+
+std::string message(const Number& score) {
+    return "current score = " + std::to_string(score);
+}
+
+} // namespace
+
 namespace view
 {
 
@@ -9,8 +20,7 @@ Score::Score(Curse& curse, int row):
 {}
 
 void Score::draw(const Number& score) {
-    (void) score;
-
+    _curse.mvprint(_row, 0, message(score).c_str());
 }
 
 }

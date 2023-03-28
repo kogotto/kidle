@@ -17,6 +17,10 @@ void Curse::print(const char* str) {
     ::printw("%s", str);
 }
 
+void Curse::mvprint(int row, int col, const char* str) {
+    ::mvprintw(row, col, "%s", str);
+}
+
 void Curse::refresh() {
     ::refresh();
 }

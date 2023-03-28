@@ -16,6 +16,7 @@ public:
     Curse& operator=(Curse&&) = default;
 
     void print(const char* str);
+    void mvprint(int row, int col, const char* str);
     void refresh();
     int getchar();
 private:

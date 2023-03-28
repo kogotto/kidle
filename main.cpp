@@ -57,9 +57,8 @@ void drawLoop(view::Curse& curse, ModelHolder& modelHolder) {
     kloop::mainLoop(
         drawPeriod,
         [&curse, &modelHolder] () {
-            auto result = drawIteration(curse, modelHolder);
-            curse.refresh();
-            return result;
+            view::CurseRefresher refresher(curse);
+            return drawIteration(curse, modelHolder);
         }
     );
 }

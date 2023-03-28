@@ -21,4 +21,16 @@ public:
 private:
 };
 
+struct CurseRefresher {
+    CurseRefresher(Curse& curse)
+        : _curse(curse)
+    {}
+
+    ~CurseRefresher() {
+        _curse.refresh();
+    }
+private:
+    Curse& _curse;
+};
+
 } // namespace view

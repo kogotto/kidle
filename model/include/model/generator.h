@@ -17,7 +17,7 @@ public:
 
 
 private:
-    Number _manual{0};
+    Number _manual{1};
     Number _produced{0};
     Number _multiplier{1};
 };

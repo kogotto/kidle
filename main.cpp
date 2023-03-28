@@ -6,6 +6,9 @@
 #include "harmonicloophelpers.h"
 #include "sharedvariable.h"
 
+namespace
+{
+
 std::string message(int tick) {
     return std::string("Tick: ") + std::to_string(tick) + "\n";
 }
@@ -60,6 +63,8 @@ void drawLoop(view::Curse& curse, ModelHolder& modelHolder) {
         }
     );
 }
+
+} // namespace
 
 int main() {
 

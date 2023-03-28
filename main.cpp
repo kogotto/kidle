@@ -2,9 +2,13 @@
 #include <string>
 #include <thread>
 
-#include <view/curse.h>
 #include "harmonicloophelpers.h"
 #include "sharedvariable.h"
+
+#include <model/world.h>
+
+#include <view/curse.h>
+#include <view/world.h>
 
 namespace
 {
@@ -20,13 +24,12 @@ int next(concurrent::Variable<int>& dataHolder) {
 
 constexpr std::chrono::milliseconds processPeriod{30};
 
-using ModelHolder = concurrent::Variable<int>;
+using ModelHolder = concurrent::Variable<model::World>;
 
 kloop::LoopControl processIteration(ModelHolder& modelHolder) {
-    const auto currentData = next(modelHolder);
-    return currentData > 100 ?
-        kloop::LoopControl::Break:
-        kloop::LoopControl::Continue;
+    auto worldModel = modelHolder.uniqueLock();
+    worldModel->tick(processPeriod);
+    return kloop::LoopControl::Continue;
 }
 
 void processLoop(ModelHolder& modelHolder) {
@@ -41,24 +44,20 @@ void processLoop(ModelHolder& modelHolder) {
 constexpr std::chrono::milliseconds drawPeriod{50};
 
 kloop::LoopControl drawIteration(
-        view::Curse& curse,
+        view::World& worldView,
         ModelHolder& modelHolder) {
-    const auto currentData = [&modelHolder] {
-        const auto data = modelHolder.uniqueLock();
-        return *data;
-    } ();
-    curse.print(message(currentData).c_str());
-    return currentData > 100 ?
-        kloop::LoopControl::Break:
-        kloop::LoopControl::Continue;
+    auto worldModel = modelHolder.uniqueLock();
+    worldView.draw(*worldModel);
+    return kloop::LoopControl::Continue;
 }
 
 void drawLoop(view::Curse& curse, ModelHolder& modelHolder) {
+    view::World worldView{curse};
     kloop::mainLoop(
         drawPeriod,
-        [&curse, &modelHolder] () {
+        [&curse, &worldView, &modelHolder] () {
             view::CurseRefresher refresher(curse);
-            return drawIteration(curse, modelHolder);
+            return drawIteration(worldView, modelHolder);
         }
     );
 }
@@ -67,16 +66,16 @@ void drawLoop(view::Curse& curse, ModelHolder& modelHolder) {
 
 int main() {
 
-    concurrent::Variable<int> dataHolder{0};
+    ModelHolder worldModelHolder;
 
     std::jthread processThread{
         processLoop,
-        std::ref(dataHolder)
+        std::ref(worldModelHolder)
     };
 
     view::Curse curse;
 
-    drawLoop(curse, dataHolder);
+    drawLoop(curse, worldModelHolder);
 
     curse.print("Print text through curse");
     curse.refresh();

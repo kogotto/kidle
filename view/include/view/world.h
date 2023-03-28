@@ -10,9 +10,15 @@ class World;
 
 namespace view
 {
+class Curse;
+} // namespace view
+
+namespace view
+{
 
 class World {
 public:
+    World(Curse& curse);
     void draw(const model::World& worldModel);
 private:
     Score _score;

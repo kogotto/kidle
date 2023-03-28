@@ -49,6 +49,12 @@ public:
         data(std::forward<Args>(args)...)
     {}
 
+    Variable(const Variable&) = delete;
+    Variable& operator=(const Variable&) = delete;
+
+    Variable(Variable&&) = default;
+    Variable& operator=(Variable&&) = default;
+
     LockedPtr<std::unique_lock<Mutex>, Data> uniqueLock() {
         return {std::unique_lock{mutex}, data};
     }

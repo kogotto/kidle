@@ -15,6 +15,8 @@ int next(concurrent::Variable<int>& dataHolder) {
     return ++*data;
 }
 
+constexpr std::chrono::milliseconds period{30};
+
 int main() {
 
     concurrent::Variable<int> dataHolder{0};
@@ -22,7 +24,7 @@ int main() {
     std::jthread processThread{
         [&dataHolder] {
             kloop::mainLoop(
-                std::chrono::milliseconds{30},
+                period,
                 [&dataHolder] () mutable {
                     const auto currentData = next(dataHolder);
                     return currentData > 100 ?

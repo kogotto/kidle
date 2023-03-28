@@ -35,6 +35,31 @@ void processLoop(ModelHolder& modelHolder) {
     );
 }
 
+constexpr std::chrono::milliseconds drawPeriod{50};
+
+kloop::LoopControl drawIteration(
+        view::Curse& curse,
+        ModelHolder& modelHolder) {
+    const auto currentData = [&modelHolder] {
+        const auto data = modelHolder.uniqueLock();
+        return *data;
+    } ();
+    curse.print(message(currentData).c_str());
+    curse.refresh();
+    return currentData > 100 ?
+        kloop::LoopControl::Break:
+        kloop::LoopControl::Continue;
+}
+
+void drawLoop(view::Curse& curse, ModelHolder& modelHolder) {
+    kloop::mainLoop(
+        drawPeriod,
+        [&curse, &modelHolder] () {
+            return drawIteration(curse, modelHolder);
+        }
+    );
+}
+
 int main() {
 
     concurrent::Variable<int> dataHolder{0};
@@ -46,20 +71,7 @@ int main() {
 
     view::Curse curse;
 
-    kloop::mainLoop(
-        std::chrono::milliseconds{50},
-        [&curse, &dataHolder] () mutable {
-            const auto currentData = [&dataHolder] {
-                const auto data = dataHolder.uniqueLock();
-                return *data;
-            } ();
-            curse.print(message(currentData).c_str());
-            curse.refresh();
-            return currentData > 100 ?
-               kloop::LoopControl::Break:
-               kloop::LoopControl::Continue;
-        }
-    );
+    drawLoop(curse, dataHolder);
 
     curse.print("Print text through curse");
     curse.refresh();

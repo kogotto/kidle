@@ -15,24 +15,33 @@ int next(concurrent::Variable<int>& dataHolder) {
     return ++*data;
 }
 
-constexpr std::chrono::milliseconds period{30};
+constexpr std::chrono::milliseconds processPeriod{30};
+
+using ModelHolder = concurrent::Variable<int>;
+
+kloop::LoopControl processIteration(ModelHolder& modelHolder) {
+    const auto currentData = next(modelHolder);
+    return currentData > 100 ?
+        kloop::LoopControl::Break:
+        kloop::LoopControl::Continue;
+}
+
+void processLoop(ModelHolder& modelHolder) {
+    kloop::mainLoop(
+        processPeriod,
+        [&modelHolder] () mutable {
+            return processIteration(modelHolder);
+        }
+    );
+}
 
 int main() {
 
     concurrent::Variable<int> dataHolder{0};
 
     std::jthread processThread{
-        [&dataHolder] {
-            kloop::mainLoop(
-                period,
-                [&dataHolder] () mutable {
-                    const auto currentData = next(dataHolder);
-                    return currentData > 100 ?
-                       kloop::LoopControl::Break:
-                       kloop::LoopControl::Continue;
-                }
-            );
-        }
+        processLoop,
+        std::ref(dataHolder)
     };
 
     view::Curse curse;

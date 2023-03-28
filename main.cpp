@@ -45,7 +45,6 @@ kloop::LoopControl drawIteration(
         return *data;
     } ();
     curse.print(message(currentData).c_str());
-    curse.refresh();
     return currentData > 100 ?
         kloop::LoopControl::Break:
         kloop::LoopControl::Continue;
@@ -55,7 +54,9 @@ void drawLoop(view::Curse& curse, ModelHolder& modelHolder) {
     kloop::mainLoop(
         drawPeriod,
         [&curse, &modelHolder] () {
-            return drawIteration(curse, modelHolder);
+            auto result = drawIteration(curse, modelHolder);
+            curse.refresh();
+            return result;
         }
     );
 }

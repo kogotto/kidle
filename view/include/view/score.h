@@ -1,8 +1,11 @@
 #pragma once
 
-#include <view/curse.h>
-
 #include <model/defs.h>
+
+namespace view
+{
+class Curse;
+}
 
 namespace view
 {

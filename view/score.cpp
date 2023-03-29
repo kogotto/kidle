@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include <view/curse.h>
+
 namespace
 {
 

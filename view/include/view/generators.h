@@ -16,9 +16,14 @@ namespace view
 
 class Generators {
 public:
+    using Raw = std::array<Generator, GeneratorsCount>;
+    using Rows = std::array<int, GeneratorsCount>;
+
+    Generators(Curse& curse, const Rows& rows);
+
     void draw(const model::Generators& generatorsModel);
 private:
-    std::array<Generator, GeneratorsCount> _generators;
+    Raw _generators;
 };
 
 } // namespace view

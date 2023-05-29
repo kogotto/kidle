@@ -15,6 +15,7 @@ public:
 
     void manualUpgrage();
 
+    Number total() const;
 
 private:
     Number _manual{1};

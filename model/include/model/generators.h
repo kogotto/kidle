@@ -21,7 +21,7 @@ public:
 
 private:
     RawGenerators _generators;
-    size_t _size{2u};
+    size_t _size{8u};
 };
 
 } // namespace model

@@ -26,4 +26,8 @@ Number Generator::tick([[maybe_unused]] std::chrono::milliseconds delta) const {
 void Generator::manualUpgrage() {
 }
 
+Number Generator::total() const {
+    return _manual + _produced;
+}
+
 } // namespace model

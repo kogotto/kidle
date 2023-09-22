@@ -1,5 +1,4 @@
 #include <chrono>
-#include <string>
 #include <thread>
 
 #include "harmonicloophelpers.h"
@@ -12,15 +11,6 @@
 
 namespace
 {
-
-std::string message(int tick) {
-    return std::string("Tick: ") + std::to_string(tick) + "\n";
-}
-
-int next(concurrent::Variable<int>& dataHolder) {
-    auto data = dataHolder.uniqueLock();
-    return ++*data;
-}
 
 constexpr std::chrono::milliseconds processPeriod{30};
 
@@ -76,10 +66,6 @@ int main() {
     view::Curse curse;
 
     drawLoop(curse, worldModelHolder);
-
-    curse.print("Print text through curse");
-    curse.refresh();
-    curse.getchar();
 
     return 0;
 }
